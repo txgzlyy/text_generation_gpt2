@@ -1,6 +1,6 @@
 from nameko.rpc import rpc
 from rpc_run.rpc_config import MsBase, user_, uid_
-from generate_tzxd import GenerateObj
+from generate import GenerateObj
 from wisdoms.commons import success, revert, codes
 
 

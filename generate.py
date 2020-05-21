@@ -1,7 +1,6 @@
 import torch
 import torch.nn.functional as F
 import os
-from tokenizations import tokenization_bert_word_level as tokenization_bert
 from tokenizations import tokenization_bert
 from tqdm import trange
 from transformers import GPT2LMHeadModel
