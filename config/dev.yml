@@ -1,0 +1,6 @@
+MS_HOST: {AMQP_URI: 'amqp://guest:guest@localhost'}
+#ES_HOST: 'http://114.115.135.23:9020'
+#ES_NAME: 'elastic'
+#ES_PASS: 'RKd1s9wSwj'
+#REDIS_HOST: '114.115.135.23'
+#REDIS_PORT: 6379
