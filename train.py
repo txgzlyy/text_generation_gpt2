@@ -44,7 +44,7 @@ def main():
     parser.add_argument('--model_config', default='config/model_config_small.json', type=str, required=False,
                         help='选择模型参数')
     parser.add_argument('--tokenizer_path', default='cache/vocab_small.txt', type=str, required=False, help='选择词库')
-    parser.add_argument('--raw_data_path', default='data/train.json', type=str, required=False, help='原始训练语料')
+    parser.add_argument('--raw_data_path', default='data/s_j.json', type=str, required=False, help='原始训练语料')
     parser.add_argument('--tokenized_data_path', default='data/tokenized/', type=str, required=False,
                         help='tokenized语料存放位置')
     parser.add_argument('--raw', action='store_true', help='是否先做tokenize')
@@ -165,6 +165,7 @@ def main():
         random.shuffle(x)
         piece_num = 0
         for i in x:
+            # 随机抽取语料
             with open(tokenized_data_path + 'tokenized_train_{}.txt'.format(i), 'r') as f:
                 line = f.read().strip()
             tokens = line.split()
