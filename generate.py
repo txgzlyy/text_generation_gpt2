@@ -203,4 +203,4 @@ class Generate:
 
 GenerateObj = Generate()
 if __name__ == '__main__':
-    GenerateObj.main("抽水机")
+    GenerateObj.main("别墅", model="model_fdc")
