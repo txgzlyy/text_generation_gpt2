@@ -2,7 +2,7 @@ from datetime import datetime
 from nameko.rpc import rpc
 from rpc_run.rpc_config import MsBase, user_, uid_, ES_HOST, ES_NAME, ES_PASS
 from rpc_run.models import GnerateDoc
-# from generate import GenerateObj
+from generate import GenerateObj
 from wisdoms.commons import success, revert, codes
 from wisdoms.es_db import EsSearch
 from elasticsearch_dsl import Q, search
@@ -13,17 +13,17 @@ es = EsSearch(ES_HOST, http_auth=(ES_NAME, ES_PASS))
 class Gpt2(MsBase):
     name = "Gpt2App"
 
-    # @rpc
-    # def get_text(self, req):
-    #     '''
-    #     向手机发送验证码
-    #     :param req:
-    #     :return:
-    #     '''
-    #     data = req["data"]
-    #     # 生成验证码
-    #     res = GenerateObj.main(**data)
-    #     return success(res)
+    @rpc
+    def get_text(self, req):
+        '''
+        向手机发送验证码
+        :param req:
+        :return:
+        '''
+        data = req["data"]
+        # 生成验证码
+        res = GenerateObj.main(**data)
+        return success(res)
 
     @rpc
     @user_
