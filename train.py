@@ -44,12 +44,11 @@ def main():
     parser.add_argument('--model_config', default='config/model_config_small.json', type=str, required=False,
                         help='选择模型参数')
     parser.add_argument('--tokenizer_path', default='cache/vocab_small.txt', type=str, required=False, help='选择词库')
-    parser.add_argument('--raw_data_path', default='data/s_j.json', type=str, required=False, help='原始训练语料')
-    parser.add_argument('--tokenized_data_path', default='data/tokenized/', type=str, required=False,
-                        help='tokenized语料存放位置')
+    parser.add_argument('--raw_data_path', default='data/yewu.json', type=str, required=False, help='原始训练语料')
+    parser.add_argument('--tokenized_data_path', default='data/tokenized/', type=str, required=False, help='tokenized语料存放位置')
     parser.add_argument('--raw', action='store_true', help='是否先做tokenize')
-    parser.add_argument('--epochs', default=5, type=int, required=False, help='训练循环')
-    parser.add_argument('--batch_size', default=1, type=int, required=False, help='训练batch size')
+    parser.add_argument('--epochs', default=20, type=int, required=False, help='训练循环')
+    parser.add_argument('--batch_size', default=4, type=int, required=False, help='训练batch size')
     parser.add_argument('--lr', default=1.5e-4, type=float, required=False, help='学习率')
     parser.add_argument('--warmup_steps', default=2000, type=int, required=False, help='warm up步数')
     parser.add_argument('--log_step', default=1, type=int, required=False, help='多少步汇报一次loss，设置为gradient accumulation的整数倍')
@@ -142,7 +141,7 @@ def main():
 
     optimizer = transformers.AdamW(model.parameters(), lr=lr, correct_bias=True)
     scheduler = transformers.WarmupLinearSchedule(optimizer, warmup_steps=warmup_steps,
-                                                          t_total=total_steps)
+                                                  t_total=total_steps)
     if fp16:
         try:
             from apex import amp
@@ -176,7 +175,7 @@ def main():
                 samples.append(tokens[start_point: start_point + n_ctx])
                 start_point += stride
             if start_point < len(tokens):
-                samples.append(tokens[len(tokens)-n_ctx:])
+                samples.append(tokens[len(tokens) - n_ctx:])
             random.shuffle(samples)
             for step in range(len(samples) // batch_size):  # drop last
 
@@ -225,6 +224,12 @@ def main():
                     running_loss = 0
                 overall_step += 1
             piece_num += 1
+        if epoch // 5:
+            print('training %d finished' % epoch)
+            if not os.path.exists(output_dir + 'model_%d' % epoch):
+                os.mkdir(output_dir + 'model_%d' % epoch)
+            model_to_save = model.module if hasattr(model, 'module') else model
+            model_to_save.save_pretrained(output_dir + 'model_%d' % epoch)
 
     print('training finished')
     if not os.path.exists(output_dir + 'final_model'):
