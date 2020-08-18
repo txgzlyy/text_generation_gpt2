@@ -45,13 +45,15 @@ def main():
                         help='选择模型参数')
     parser.add_argument('--tokenizer_path', default='cache/vocab_small.txt', type=str, required=False, help='选择词库')
     parser.add_argument('--raw_data_path', default='data/yewu.json', type=str, required=False, help='原始训练语料')
-    parser.add_argument('--tokenized_data_path', default='data/tokenized/', type=str, required=False, help='tokenized语料存放位置')
+    parser.add_argument('--tokenized_data_path', default='data/tokenized/', type=str, required=False,
+                        help='tokenized语料存放位置')
     parser.add_argument('--raw', action='store_true', help='是否先做tokenize')
     parser.add_argument('--epochs', default=20, type=int, required=False, help='训练循环')
     parser.add_argument('--batch_size', default=4, type=int, required=False, help='训练batch size')
     parser.add_argument('--lr', default=1.5e-4, type=float, required=False, help='学习率')
     parser.add_argument('--warmup_steps', default=2000, type=int, required=False, help='warm up步数')
-    parser.add_argument('--log_step', default=1, type=int, required=False, help='多少步汇报一次loss，设置为gradient accumulation的整数倍')
+    parser.add_argument('--log_step', default=1, type=int, required=False,
+                        help='多少步汇报一次loss，设置为gradient accumulation的整数倍')
     parser.add_argument('--stride', default=768, type=int, required=False, help='训练时取训练数据的窗口步长')
     parser.add_argument('--gradient_accumulation', default=1, type=int, required=False, help='梯度积累')
     parser.add_argument('--fp16', action='store_true', help='混合精度')
@@ -224,7 +226,7 @@ def main():
                     running_loss = 0
                 overall_step += 1
             piece_num += 1
-        if epoch // 5:
+        if not epoch % 5 and epoch != 0:
             print('training %d finished' % epoch)
             if not os.path.exists(output_dir + 'model_%d' % epoch):
                 os.mkdir(output_dir + 'model_%d' % epoch)
